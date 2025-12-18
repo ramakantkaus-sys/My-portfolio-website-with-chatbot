@@ -59,6 +59,20 @@ const Skills = () => {
                     scrollTrigger: {
                         trigger: skillsRef.current,
                         start: "top 85%"
+                    },
+                    onComplete: () => {
+                        // Continuous floating animation
+                        gsap.to(".skill-card", {
+                            y: "-=10",
+                            duration: 2,
+                            yoyo: true,
+                            repeat: -1,
+                            ease: "sine.inOut",
+                            stagger: {
+                                each: 0.2,
+                                from: "random"
+                            }
+                        });
                     }
                 }
             );

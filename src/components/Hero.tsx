@@ -14,65 +14,61 @@ const Hero = () => {
   const orbRef3 = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const tl = gsap.timeline({ delay: 4 });
+    const tl = gsap.timeline({ delay: 0.5 }); // Reduced delay for faster impact
 
-    tl.from(titleRef.current, {
-      y: 50,
-      opacity: 0,
-      filter: "blur(10px)",
-      duration: 1,
-      ease: "power3.out"
-    })
-      .from(subtitleRef.current, {
-        y: 30,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out"
-      }, "-=0.5")
-      .from(ctaRef.current, {
-        y: 30,
-        opacity: 0,
-        scale: 0.9,
-        duration: 0.8,
-        ease: "back.out(1.7)"
-      }, "-=0.3")
-      .from(splineRef.current, {
-        x: 100,
-        opacity: 0,
+    // Parallax logic
+    const handleMouseMove = (e: MouseEvent) => {
+      const { clientX, clientY } = e;
+      const x = (clientX / window.innerWidth - 0.5) * 20;
+      const y = (clientY / window.innerHeight - 0.5) * 20;
+
+      gsap.to(orbRef1.current, { x: x * 2, y: y * 2, duration: 2, ease: "power2.out" });
+      gsap.to(orbRef2.current, { x: -x * 1.5, y: -y * 1.5, duration: 2, ease: "power2.out" });
+      gsap.to(orbRef3.current, { x: x, y: -y, duration: 2, ease: "power2.out" });
+      gsap.to(splineRef.current, { x: x * 0.5, y: y * 0.5, duration: 1, ease: "power2.out" });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+
+    // Initial Reveal Animations
+    tl.fromTo(titleRef.current,
+      { y: 100, opacity: 0, scale: 0.9 },
+      {
+        y: 0,
+        opacity: 1,
+        scale: 1,
         duration: 1.2,
         ease: "power3.out"
-      }, "-=1");
-
-    gsap.to(orbRef1.current, {
-      y: -20,
-      x: 10,
-      duration: 4,
-      repeat: -1,
-      yoyo: true,
-      ease: "power1.inOut"
-    });
-
-    gsap.to(orbRef2.current, {
-      y: -30,
-      x: -15,
-      duration: 5,
-      repeat: -1,
-      yoyo: true,
-      ease: "power1.inOut",
-      delay: 1
-    });
-
-    gsap.to(orbRef3.current, {
-      y: -25,
-      x: 20,
-      duration: 6,
-      repeat: -1,
-      yoyo: true,
-      ease: "power1.inOut",
-      delay: 2
-    });
+      }
+    )
+      .fromTo(subtitleRef.current,
+        { y: 50, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease: "power2.out"
+        }, "-=0.8")
+      .fromTo(ctaRef.current?.children || [],
+        { y: 30, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          stagger: 0.2,
+          ease: "back.out(1.7)"
+        }, "-=0.6")
+      .fromTo(splineRef.current,
+        { opacity: 0, scale: 0.8 },
+        {
+          opacity: 0.7,
+          scale: 1,
+          duration: 1.5,
+          ease: "power2.out"
+        }, "-=1.5");
 
     return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
       tl.kill();
     };
   }, []);

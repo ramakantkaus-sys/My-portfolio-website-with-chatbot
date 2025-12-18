@@ -142,7 +142,7 @@ export const RamakantChatbot = () => {
                                                 "p-3 rounded-xl text-sm leading-relaxed shadow-sm",
                                                 msg.role === "user"
                                                     ? "bg-primary text-primary-foreground rounded-tr-none"
-                                                    : "bg-background border border-border/50 rounded-tl-none"
+                                                    : "bg-background border border-border/50 text-foreground rounded-tl-none"
                                             )}
                                         >
                                             {msg.content}
@@ -177,7 +177,7 @@ export const RamakantChatbot = () => {
                                     <button
                                         key={prompt}
                                         onClick={() => handleSendMessage(`Tell me about Ramakant's ${prompt}`)}
-                                        className="text-xs px-3 py-1.5 bg-secondary/10 hover:bg-secondary/20 text-secondary-foreground rounded-full border border-secondary/20 transition-colors whitespace-nowrap"
+                                        className="text-xs px-3 py-1.5 bg-primary/10 hover:bg-primary/20 text-foreground rounded-full border border-primary/20 transition-colors whitespace-nowrap"
                                     >
                                         Ask about {prompt}
                                     </button>

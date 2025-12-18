@@ -51,30 +51,37 @@ const Projects = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from(titleRef.current?.children || [], {
-        y: 30,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.2,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: titleRef.current,
-          start: "top 80%"
+      // Animate Section Title
+      gsap.fromTo(titleRef.current,
+        { y: 30, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: titleRef.current,
+            start: "top 85%"
+          }
         }
-      });
+      );
 
-      gsap.from(containerRef.current?.children || [], {
-        y: 50,
-        opacity: 0,
-        scale: 0.95,
-        duration: 0.6,
-        stagger: 0.1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top 80%"
+      // Animate Projects Grid
+      gsap.fromTo(".project-card",
+        { y: 50, opacity: 0, scale: 0.95 },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.6,
+          stagger: 0.2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top 80%"
+          }
         }
-      });
+      );
     }, sectionRef);
 
     return () => ctx.revert();
@@ -92,7 +99,7 @@ const Projects = () => {
 
         <div ref={containerRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {projects.map((project) => (
-            <div key={project.id} className="group relative rounded-xl overflow-hidden glass hover:shadow-glow-primary transition-all duration-300 border border-border/50">
+            <div key={project.id} className="project-card group relative rounded-xl overflow-hidden glass hover:shadow-glow-primary transition-all duration-300 border border-border/50 opacity-0 transform-gpu">
 
               {/* Image Section */}
               <div className="h-56 overflow-hidden relative">

@@ -27,30 +27,41 @@ const Skills = () => {
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-            gsap.from(titleRef.current?.children || [], {
-                y: 30,
-                opacity: 0,
-                duration: 0.8,
-                stagger: 0.2,
-                ease: "power3.out",
-                scrollTrigger: {
-                    trigger: titleRef.current,
-                    start: "top 80%"
+            // Animate Title
+            gsap.fromTo(titleRef.current,
+                { y: 30, opacity: 0 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.8,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: titleRef.current,
+                        start: "top 85%"
+                    }
                 }
-            });
+            );
 
-            gsap.from(skillsRef.current?.children || [], {
-                y: 30,
-                opacity: 0,
-                scale: 0.9,
-                duration: 0.6,
-                stagger: 0.1,
-                ease: "back.out(1.7)",
-                scrollTrigger: {
-                    trigger: skillsRef.current,
-                    start: "top 85%"
+            // Animate Skills Grid
+            gsap.fromTo(".skill-card",
+                { y: 50, opacity: 0, scale: 0.9 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    scale: 1,
+                    duration: 0.5,
+                    stagger: {
+                        each: 0.05,
+                        grid: "auto",
+                        from: "start"
+                    },
+                    ease: "back.out(1.5)",
+                    scrollTrigger: {
+                        trigger: skillsRef.current,
+                        start: "top 85%"
+                    }
                 }
-            });
+            );
         }, sectionRef);
 
         return () => ctx.revert();
@@ -68,7 +79,7 @@ const Skills = () => {
 
                 <div ref={skillsRef} className="grid grid-cols-2 md:grid-cols-4 gap-6">
                     {skills.map((skill) => (
-                        <div key={skill.name} className="glass p-6 cursor-pointer rounded-xl hover:shadow-glow-primary transition-all duration-300 hover:scale-105 group border border-border/50">
+                        <div key={skill.name} className="skill-card glass p-6 cursor-pointer rounded-xl hover:shadow-glow-primary transition-all duration-300 hover:scale-105 group border border-border/50 opacity-0">
                             <div className="flex flex-col items-center text-center space-y-3">
                                 <div className="w-12 h-12 bg-gradient-primary rounded-lg flex items-center justify-center group-hover:animate-bounce">
                                     <skill.icon size={24} className="text-primary-foreground" />
